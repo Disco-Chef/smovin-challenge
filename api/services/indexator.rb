@@ -3,7 +3,7 @@ require 'open-uri'
 class Indexator
   BASES = [1988, 1996, 2004, 2013]
 
-  # TK: Consistency: use attributes and instance variable like in the validator for consistency? 🤔
+  # TK: Consistency: use attributes and instance variables like in the validator for consistency? 🤔
   def compute_new_rent(base_rent, region, signed_on, start_date)
     # TK: This code perhaps smells?
     base_month_date = signed_on.prev_month
@@ -26,7 +26,8 @@ class Indexator
   private
 
   def call_index_endpoint(base_year, date_strftimed)
-    return JSON.parse(URI.open("https://fi7661d6o4.execute-api.eu-central-1.amazonaws.com/prod/indexes/#{base_year}/#{date_strftimed}").read)["index"]["MS_HLTH_IDX"]
+    base_url = "https://fi7661d6o4.execute-api.eu-central-1.amazonaws.com/prod/indexes"
+    return JSON.parse(URI.open(base_url += "/#{base_year}/#{date_strftimed}").read)["index"]["MS_HLTH_IDX"]
   end
 
   def set_base_year(base_month_date)

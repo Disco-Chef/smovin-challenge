@@ -14,13 +14,13 @@ class RequestBodyParameterValidator
     return !errors.empty?
   end
 
+  private
+
   def run
     validate_region
     validate_rent
     validate_dates
   end
-
-  private
 
   def validate_region
     unless @region.nil? || @region.empty?
@@ -37,35 +37,6 @@ class RequestBodyParameterValidator
       @errors['base_rent'] = ['missing']
     end
   end
-
-  # TK: Make DRY these date validators:
-  # def validate_signed_on
-  #   unless @signed_on.nil? || @signed_on.empty?
-  #     begin
-  #       @signed_on = Date.parse(@signed_on)
-  #     rescue
-  #       @errors['signed_on'] = ['invalid_date']
-  #     else
-  #       @errors['signed_on'] = ['date_cannot_be_in_the_future'] if @signed_on > Date.today
-  #     end
-  #   else
-  #     @errors['signed_on'] = ['missing']
-  #   end
-  # end
-
-  # def validate_start_date
-  #   unless @start_date.nil? || @start_date.empty?
-  #     begin
-  #       @start_date = Date.parse(@start_date)
-  #     rescue
-  #       @errors['start_date'] = ['invalid_date']
-  #     else
-  #       @errors['start_date'] = ['date_cannot_be_in_the_future'] if @start_date > Date.today
-  #     end
-  #   else
-  #     @errors['start_date'] = ['missing']
-  #   end
-  # end
 
   def validate_dates
     {'signed_on' => @signed_on, 'start_date' => @start_date}.each do |attr_name, date_string|
