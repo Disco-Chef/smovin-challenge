@@ -1,9 +1,10 @@
 require 'open-uri'
+require 'json' #TK: For test running file separately..
 
 class Indexator
   BASES = [1988, 1996, 2004, 2013]
 
-  # TK: Consistency: use attributes and instance variables like in the validator for consistency? 🤔
+  # TK: Consistency: use attributes and instance variables like in the validator for consistency? (And to avoid remembering to give 4 args in specific order 😅)
   def compute_new_rent(base_rent, region, signed_on, start_date)
     # TK: This code perhaps smells?
     base_month_date = signed_on.prev_month
