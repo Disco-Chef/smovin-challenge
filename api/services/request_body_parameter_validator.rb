@@ -20,6 +20,7 @@ class RequestBodyParameterValidator
     validate_region
     validate_rent
     validate_dates
+    validate_start_date_after_signed_on unless @errors['signed_on'] || @errors['start_date']
   end
 
   def validate_region
@@ -46,11 +47,16 @@ class RequestBodyParameterValidator
         rescue
           @errors[attr_name] = ['invalid_date']
         else
-          @errors[attr_name] = ['date_cannot_be_in_the_future'] if date_object > Date.today
+          @errors[attr_name] = ['cannot_be_in_the_future'] if date_object > Date.today
         end
       else
         @errors[attr_name] = ['missing']
       end
     end
+  end
+
+  def validate_start_date_after_signed_on
+    # TK: Can a contract start on same day as it was signed? 🤔 if so, `>=` instead of `>`
+    @errors['start_date_and_signed_on_conflict'] = ['start_date_must_be_in_the_future_of_signed_on_date'] if Date.parse(@signed_on) > Date.parse(@start_date)
   end
 end
