@@ -16,10 +16,13 @@ post '/v1/indexations' do
   end
 
   # TK: Use parsed body to do the calls to the indexation endpoint => Indexator.new.call(region, rent, signed_on, start_on)
+  signed_on = Date.parse(request_body['signed_on'])
+  start_date = Date.parse(request_body['start_date'])
+  base_rent = request_body['base_rent']
+  region = request_body['region']
 
-  # TK: Respond with status 200 and response body with the new_rent, base_index, current_index
-  # byebug
-  # return request_body.to_json
+  response.status = 200
+  return Indexator.new.call(base_rent, region, signed_on, start_date).to_json
 end
 
 # TK: Accept: application/json in config? Also, all of this below into separate file..
