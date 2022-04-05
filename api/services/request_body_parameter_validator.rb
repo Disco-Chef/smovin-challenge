@@ -1,5 +1,6 @@
-class UserInputValidator
+class RequestBodyParameterValidator
   attr_reader :errors
+
   def initialize(user_input)
     @base_rent = user_input['base_rent']
     @signed_on = user_input['signed_on']
@@ -47,7 +48,6 @@ class UserInputValidator
         @errors['signed_on'] = ['invalid_date']
       else
         @errors['signed_on'] = ['date_cannot_be_in_the_future'] if @signed_on > Date.today
-
       end
     else
       @errors['signed_on'] = ['missing']

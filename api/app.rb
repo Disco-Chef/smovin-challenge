@@ -2,14 +2,14 @@ require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'byebug'
 require_relative './services/indexator.rb'
-require_relative './services/user_input_validator.rb'
+require_relative './services/request_body_parameter_validator.rb'
 
 post '/v1/indexations' do
 
   request_body = JSON.parse(request.body.read)
 
   # TK: Check for bad params. If so, respond with status 400 with errors for each input in the response body
-  user_input_validator = UserInputValidator.new(request_body)
+  user_input_validator = RequestBodyParameterValidator.new(request_body)
   if user_input_validator.errors?
     response.status = 400
     return user_input_validator.errors.to_json
@@ -22,7 +22,7 @@ post '/v1/indexations' do
   region = request_body['region']
 
   response.status = 200
-  return Indexator.new.call(base_rent, region, signed_on, start_date).to_json
+  return Indexator.new.compute_new_rent(base_rent, region, signed_on, start_date).to_json
 end
 
 # TK: Accept: application/json in config? Also, all of this below into separate file..
