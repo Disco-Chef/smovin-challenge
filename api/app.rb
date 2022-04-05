@@ -36,7 +36,7 @@ end
 
 options '*' do
   response.headers['Allow'] = 'POST, OPTIONS'
-  response.headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token'
+  response.headers['Access-Control-Allow-Headers'] = 'Accept'
   response.headers['Access-Control-Allow-Origin'] = '*'
   200
 end
