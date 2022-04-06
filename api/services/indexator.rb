@@ -26,7 +26,6 @@ class Indexator
 
   def call_index_endpoint(base_year, date_strftimed)
     url = "https://fi7661d6o4.execute-api.eu-central-1.amazonaws.com/prod/indexes/#{base_year}/#{date_strftimed}"
-    p url
     return JSON.parse(URI.open(url).read)['index']['MS_HLTH_IDX']
   end
 
