@@ -56,7 +56,6 @@ class RequestBodyParameterValidator
   end
 
   def validate_start_date_after_signed_on
-    # TK: Can a contract start on same day as it was signed? 🤔 if so, `>=` instead of `>`
     @errors['start_date_and_signed_on_conflict'] = ['start_date_must_be_in_the_future_of_signed_on_date'] if Date.parse(@signed_on) > Date.parse(@start_date)
   end
 end
