@@ -12,12 +12,24 @@
       </div>
       <div class="row">
         <div class="form-group">
-          <label>Region (Brussels | Flanders | Wallonia)</label>
-          <input type="text" v-model="formParams.region" :class="(submitting && (missingRegion || invalidRegion)) ? 'invalid-input' : '' " />
+          <div id="region-input-label-pairs" :class="(submitting && missingRegion) ? 'invalid-input' : '' ">
+            <div class="region-input-label-pair" :class="{activeRadioClass: activeRadio === 'brussels'}">
+              <label for="brussels" @click="radioSelect('brussels')">Brussels</label>
+              <input hidden type="radio" id="brussels" value="brussels" v-model="formParams.region" />
+            </div>
+            <div class="region-input-label-pair" :class="{activeRadioClass: activeRadio === 'flanders'}" >
+              <label for="flanders" @click="radioSelect('flanders')">Flanders</label>
+              <input hidden type="radio" id="flanders" value="flanders" v-model="formParams.region" />
+            </div>
+            <div class="region-input-label-pair" :class="{activeRadioClass: activeRadio === 'wallonia'}">
+              <label for="wallonia" @click="radioSelect('wallonia')" >Wallonia</label>
+              <input hidden type="radio" id="wallonia" value="wallonia" v-model="formParams.region"  />
+            </div>
+          </div>
         </div>
         <div class="form-group">
           <label>Rent</label>
-          <input type="text" v-model="formParams.baseRent" :class="(submitting && (missingBaseRent || negativeOrZeroBaseRent)) ? 'invalid-input' : '' " />
+          <input id="rent-label" type="text" v-model="formParams.baseRent" :class="(submitting && (missingBaseRent || negativeOrZeroBaseRent)) ? 'invalid-input' : '' " />
         </div>
       </div>
       <button>Get New Rent!</button>
@@ -49,7 +61,8 @@ export default {
         region: '',
         signedOn: '',
         startDate: '',
-      }
+      },
+      activeRadio: ''
     }
   },
   methods: {
@@ -84,6 +97,9 @@ export default {
         'signed_on': formParams.signedOn,
         'start_date': formParams.startDate
       }
+    },
+    radioSelect(region) {
+      this.activeRadio = region;
     }
   },
   components: {
@@ -114,9 +130,6 @@ export default {
     negativeOrZeroBaseRent() {
       return parseInt(this.formParams.baseRent) <= 0
     },
-    invalidRegion() {
-      return !["brussels", "Brussels", "flanders", "Flanders", "wallonia", "Wallonia"].includes(this.formParams.region)
-    },
     formIsInvalid() {
       return this.missingBaseRent        ||
              this.missingRegion          ||
@@ -125,8 +138,7 @@ export default {
              this.startDateIsInFuture    ||
              this.signedOnIsInFuture     ||
              this.startBeforeSign        ||
-             this.negativeOrZeroBaseRent ||
-             this.invalidRegion
+             this.negativeOrZeroBaseRent
     }
   }
 }
@@ -136,21 +148,22 @@ export default {
   #indexation-form {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 900px;
     justify-content: center;
+    align-items: center;
   }
   .form-group {
     display: flex;
     flex-direction: column;
-    text-align: center;
+    align-items: center;
     font-size: 24px;
-    width: 400px;
-  }
-  label {
-    width: 100%;
+    justify-content: center;
+
+    width: 200px;
+    height: 100%;
   }
   input {
-    width: 100%;
+    width: 230px;
     height: 35px;
   }
   button {
@@ -161,18 +174,40 @@ export default {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 24px;
+    width: 300px;
   }
   .row {
     display: flex;
-    justify-content: space-between;
+    width: 70%;
+    justify-content: space-around;
     margin-bottom: 15px;
   }
   .invalid-input {
     border: medium solid red;
   }
   .error-message {
-    color: red;
+    color: rgb(227, 0, 0);
+    font-weight: bold;
+    font-size: 18px;
+  }
+  input[type=text] {
+    font-size: inherit;
+  }
+  .activeRadioClass {
+    background-color: #2bac6d;
+  }
+  #region-input-label-pairs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* justify-content: center; */
+  }
+  .region-input-label-pair {
+    border: thin solid #2bac6d;
+  }
+  #rent-label{
+    width: 100px;
   }
 </style>
 

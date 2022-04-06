@@ -44,6 +44,7 @@ export default {
       }
     },
     startNewIndexation() {
+      this.$confetti.stop();
       this.successfulCall = false
     }
   }
@@ -57,9 +58,9 @@ export default {
     justify-content: center;
   }
   body {
-    margin: 0 auto;
-    width: 900px;
     text-align: center;
     background-color: lightblue;
+    display: flex;
+    justify-content: center;
   }
 </style>

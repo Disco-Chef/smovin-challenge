@@ -27,6 +27,10 @@ export default {
   },
   computed: {
     betterNewRent() {
+      let rentIsBetter = this.newRentData.newRent > this.newRentData.baseRent
+      if (rentIsBetter) {
+        this.$confetti.start();
+      }
       return this.newRentData.newRent > this.newRentData.baseRent
     }
   },
