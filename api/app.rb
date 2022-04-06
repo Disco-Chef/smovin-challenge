@@ -1,9 +1,15 @@
 require 'sinatra'
 require 'sinatra/cross_origin'
-require 'sinatra/reloader' if development?
-require 'byebug'
 require_relative './services/indexator.rb'
 require_relative './services/request_body_parameter_validator.rb'
+
+configure do
+  enable :cross_origin
+end
+
+before do
+  response.headers['Access-Control-Allow-Origin'] = '*'
+end
 
 post '/v1/indexations' do
 
@@ -24,13 +30,6 @@ post '/v1/indexations' do
   return Indexator.new.get_new_rent_data(base_rent, region, signed_on, start_date).to_json
 end
 
-configure do
-  enable :cross_origin
-end
-
-before do
-  response.headers['Access-Control-Allow-Origin'] = '*'
-end
 
 options '*' do
   response.headers['Allow'] = 'POST, OPTIONS'
