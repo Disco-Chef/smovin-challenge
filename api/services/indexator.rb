@@ -20,7 +20,7 @@ class Indexator
     return {
       'new_rent' => ((base_rent * current_index) / base_index).round(2), # TK: Convert to cents and round after converting back to euro? 🤔
       'current_index' => current_index,
-      base_index => base_index
+      'base_index' => base_index
     }
   end
 
