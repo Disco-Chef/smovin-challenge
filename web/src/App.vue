@@ -1,5 +1,5 @@
 <template>
-  <ResultCard v-if="successfulCall" v-bind:newRentData="newRentData" />
+  <ResultCard v-if="successfulCall" v-bind:newRentData="newRentData"  @new-indexation="startNewIndexation" />
   <IndexationForm v-else @give-valid-params-for-call:formParams="callIndexator" />
 </template>
 
@@ -25,32 +25,41 @@ export default {
   methods: {
     async callIndexator(formParams) {
       try {
-        console.log(formParams)
         const response = await fetch('http://localhost:4567/v1/indexations', {
           method: 'POST',
           body: JSON.stringify(formParams),
-          headers: { 'Content-type': 'application/json' },
+          headers: { 'Content-Type': 'application/json' },
         })
         const data = await response.json()
-        console.log('THIS IS DATA')
-        console.log(data)
         this.newRentData = {
-          base_rent: formParams.base_rent,
-          new_rent: data.new_rent,
-          base_index: data.base_index,
-          current_index: data.current_index
+          baseRent: formParams.base_rent,
+          newRent: data.new_rent,
+          baseIndex: data.base_index,
+          currentIndex: data.current_index
         }
-        console.log('opa')
-        console.log(this.newRentData)
+
         this.successfulCall = true
       } catch (error) {
         console.error(error)
       }
+    },
+    startNewIndexation() {
+      this.successfulCall = false
     }
   }
 }
 </script>
 
 <style>
-
+  #app {
+    margin-top: 35px;
+    display: flex;
+    justify-content: center;
+  }
+  body {
+    margin: 0 auto;
+    width: 900px;
+    text-align: center;
+    background-color: lightblue;
+  }
 </style>
