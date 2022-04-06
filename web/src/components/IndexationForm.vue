@@ -156,8 +156,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 24px;
-    justify-content: center;
+    font-size: 23px;
 
     width: 200px;
     height: 100%;
@@ -207,6 +206,10 @@ export default {
   }
   #rent-label{
     width: 100px;
+  }
+  .region-input-label-pair > label {
+    display: block;
+    width: 100%;
   }
 </style>
 
