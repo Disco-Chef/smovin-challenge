@@ -4,8 +4,8 @@
 </template>
 
 <script>
-import IndexationForm from './components/IndexationForm.vue'
-import ResultCard from './components/ResultCard.vue'
+import IndexationForm from './components/IndexationForm.vue';
+import ResultCard from './components/ResultCard.vue';
 
 export default {
   name: 'App',
@@ -13,7 +13,7 @@ export default {
     return {
       successfulCall: false,
       newRentData: {}
-    }
+    };
   },
   components: {
     IndexationForm,

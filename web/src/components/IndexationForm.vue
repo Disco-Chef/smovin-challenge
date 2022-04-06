@@ -63,35 +63,35 @@ export default {
         startDate: '',
       },
       activeRadio: ''
-    }
+    };
   },
   components: {
     Datepicker
   },
   computed: {
     missingBaseRent() {
-      return this.formParams.baseRent === ''
+      return this.formParams.baseRent === '';
     },
     missingRegion() {
-      return this.formParams.region === ''
+      return this.formParams.region === '';
     },
     missingSignedOn() {
-      return this.formParams.signedOn === ''
+      return this.formParams.signedOn === '';
     },
     missingStartDate() {
-      return this.formParams.startDate === ''
+      return this.formParams.startDate === '';
     },
     startDateIsInFuture() {
-      return this.formParams.startDate > new Date()
+      return this.formParams.startDate > new Date();
     },
     signedOnIsInFuture() {
-      return this.formParams.signedOn > new Date()
+      return this.formParams.signedOn > new Date();
     },
     startBeforeSign() {
-      return this.formParams.startDate < this.formParams.signedOn
+      return this.formParams.startDate < this.formParams.signedOn;
     },
     negativeOrZeroBaseRent() {
-      return parseInt(this.formParams.baseRent) <= 0
+      return parseInt(this.formParams.baseRent) <= 0;
     },
     formIsInvalid() {
       return this.missingBaseRent        ||
@@ -101,42 +101,33 @@ export default {
              this.startDateIsInFuture    ||
              this.signedOnIsInFuture     ||
              this.startBeforeSign        ||
-             this.negativeOrZeroBaseRent
+             this.negativeOrZeroBaseRent;
     },
     errorClassForBaseRent() {
-      return (this.submitting && (this.missingBaseRent || this.negativeOrZeroBaseRent)) ? 'invalid-input' : ''
+      return (this.submitting && (this.missingBaseRent || this.negativeOrZeroBaseRent)) ? 'invalid-input' : '';
     },
     errorClassForSignedOn() {
-      return (this.submitting && (this.missingSignedOn || this.signedOnIsInFuture || this.startBeforeSign)) ? 'invalid-input' : ''
+      return (this.submitting && (this.missingSignedOn || this.signedOnIsInFuture || this.startBeforeSign)) ? 'invalid-input' : '';
     },
     errorClassForStartDate() {
-      return (this.submitting && (this.missingStartDate || this.startDateIsInFuture || this.startBeforeSign)) ? 'invalid-input' : ''
+      return (this.submitting && (this.missingStartDate || this.startDateIsInFuture || this.startBeforeSign)) ? 'invalid-input' : '';
     }
   },
   methods: {
     trySubmit() {
       this.submitting = true
       if (this.formIsInvalid) {
-        return
+        return;
       }
-      this.convertNonStringsToRightType()
-      this.formParams = this.formatParamsForCall(this.formParams)
+      this.convertNonStringsToRightType();
+      this.formParams = this.formatParamsForCall(this.formParams);
       this.$emit('give-valid-params-for-call:formParams', this.formParams);
-      this.resetForm()
-      this.submitting = false
+      this.submitting = false;
     },
     convertNonStringsToRightType() {
-      this.formParams.baseRent = parseInt(this.formParams.baseRent)
-      this.formParams.signedOn = this.formParams.signedOn.toISOString().split('T')[0]
-      this.formParams.startDate = this.formParams.startDate.toISOString().split('T')[0]
-    },
-    resetForm() {
-      this.formParams = {
-        baseRent: '',
-        region: '',
-        signedOn: '',
-        startDate: '',
-      }
+      this.formParams.baseRent = parseInt(this.formParams.baseRent);
+      this.formParams.signedOn = this.formParams.signedOn.toISOString().split('T')[0];
+      this.formParams.startDate = this.formParams.startDate.toISOString().split('T')[0];
     },
     formatParamsForCall(formParams) {
       return {
@@ -144,7 +135,7 @@ export default {
         'region': formParams.region.toLowerCase(),
         'signed_on': formParams.signedOn,
         'start_date': formParams.startDate
-      }
+      };
     },
     radioSelect(region) {
       this.activeRadio = region;

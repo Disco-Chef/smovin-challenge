@@ -27,16 +27,16 @@ export default {
   },
   computed: {
     betterNewRent() {
-      let rentIsBetter = this.newRentData.newRent > this.newRentData.baseRent
+      let rentIsBetter = this.newRentData.newRent > this.newRentData.baseRent;
       if (rentIsBetter) {
         this.$confetti.start();
       }
-      return this.newRentData.newRent > this.newRentData.baseRent
+      return this.newRentData.newRent > this.newRentData.baseRent;
     }
   },
   methods: {
     requestNewIndexation() {
-      this.$emit('new-indexation')
+      this.$emit('new-indexation');
     }
   }
 }
