@@ -34,11 +34,11 @@
       </div>
       <button>Get New Rent!</button>
       <template v-if="submitting">
-        <p v-if="this.missingBaseRent" class="error-message">Rent is blank</p>
-        <p v-if="this.missingRegion" class="error-message">Region is blank</p>
-        <p v-if="this.missingSignedOn" class="error-message">Date contract was signed is blank</p>
-        <p v-if="this.missingStartDate" class="error-message">Rent start date is blank</p>
-        <p v-if="this.signedOnIsInFuture" class="error-message">Date contract was signed on cannot be in the future</p>
+        <p v-if="this.missingBaseRent" class="error-message">Rent cannot be blank</p>
+        <p v-if="this.missingRegion" class="error-message">Region cannot be blank</p>
+        <p v-if="this.missingSignedOn" class="error-message">Date contract was signed cannot be blank</p>
+        <p v-if="this.missingStartDate" class="error-message">Rent start date cannot be blank</p>
+        <p v-if="this.signedOnIsInFuture" class="error-message">Date the contract was signed on cannot be in the future</p>
         <p v-if="this.startDateIsInFuture" class="error-message">Rent start date cannot be in the future</p>
         <p v-if="this.startBeforeSign" class="error-message">Signed On date cannot be in the future of the rent Start Date </p>
         <p v-if="this.negativeOrZeroBaseRent" class="error-message">Rent must be positive 🔎 </p>
