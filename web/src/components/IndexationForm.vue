@@ -6,7 +6,7 @@
       </div>
       <div class="form-group">
         <label>Rent</label>
-        <input type="text" v-model="formParams.baseRent" :class="(submitting && (missingBaseRent || negativeBaseRent)) ? 'invalid-input' : '' " />
+        <input type="text" v-model="formParams.baseRent" :class="(submitting && (missingBaseRent || negativeOrZeroBaseRent)) ? 'invalid-input' : '' " />
       </div>
       <div class="form-group">
         <label>Contract Signed On</label>
@@ -18,8 +18,8 @@
       </div>
       <button>Get new indexed rent!</button>
     </form>
-    <p>Submitting: {{ submitting }} </p>
-    <p>form params: {{ formParams }}</p>
+    <!-- <p>Submitting: {{ submitting }} </p>
+    <p>form params: {{ formParams }}</p> -->
 </template>
 
 <script>
@@ -47,16 +47,16 @@ export default {
         return
       }
 
-      this.convertDateObjectToRequiredStringFormat()
+      this.convertNonStringsToRightType()
+      this.formParams = this.formatParamsForCall(this.formParams)
+      this.$emit('give-valid-params-for-call:formParams', this.formParams);
+      // TK: After successful submit
 
-      // TK: Send bodyParams to App.vue for the rendered ResultCard
-
-
-      // TK: Reset component's data
-      this.resetForm()
+      // this.resetForm()
       this.submitting = false
     },
-    convertDateObjectToRequiredStringFormat() {
+    convertNonStringsToRightType() {
+      this.formParams.baseRent = parseInt(this.formParams.baseRent)
       this.formParams.signedOn = this.formParams.signedOn.toISOString().split('T')[0]
       this.formParams.startDate = this.formParams.startDate.toISOString().split('T')[0]
     },
@@ -66,6 +66,14 @@ export default {
         region: '',
         signedOn: '',
         startDate: '',
+      }
+    },
+    formatParamsForCall(formParams) {
+      return {
+        'base_rent': formParams.baseRent,
+        'region': formParams.region.toLowerCase(),
+        'signed_on': formParams.signedOn,
+        'start_date': formParams.startDate
       }
     }
   },
@@ -94,8 +102,8 @@ export default {
     startBeforeSign() {
       return this.formParams.startDate < this.formParams.signedOn
     },
-    negativeBaseRent() {
-      return Number.isInteger(parseInt(this.formParams.baseRent))
+    negativeOrZeroBaseRent() {
+      return parseInt(this.formParams.baseRent) <= 0
     },
     invalidRegion() {
       return !["brussels", "Brussels", "flanders", "Flanders", "wallonia", "Wallonia"].includes(this.formParams.region)
@@ -108,7 +116,7 @@ export default {
              this.startDateIsInFuture                 ||
              this.signedOnIsInFuture                  ||
              this.startBeforeSign                     ||
-             this.negativeBaseRent                    ||
+             this.negativeOrZeroBaseRent                    ||
              this.invalidRegion
     }
   }
