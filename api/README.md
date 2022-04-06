@@ -7,11 +7,10 @@ bundle install
 ```
 
 ### Testing
-You can run the backend tests found in  `api/spec` folder with:
+You can run the backend tests found in  `spec` folder with:
 ```
 rspec spec
 ```
-
 
 #### Launch server
 ```
