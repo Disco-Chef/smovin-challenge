@@ -1,5 +1,5 @@
 <template>
-  <ResultCard v-if="successfulCall" v-bind:newRentData="newRentData"  @new-indexation="startNewIndexation" />
+  <ResultCard v-if="successfulCall" :newRentData="newRentData"  @new-indexation="startNewIndexation" />
   <IndexationForm v-else @give-valid-params-for-call:formParams="callIndexator" />
 </template>
 
@@ -9,15 +9,15 @@ import ResultCard from './components/ResultCard.vue'
 
 export default {
   name: 'App',
-  components: {
-    IndexationForm,
-    ResultCard
-  },
   data() {
     return {
       successfulCall: false,
       newRentData: {}
     }
+  },
+  components: {
+    IndexationForm,
+    ResultCard
   },
   emits: {
     formParams: {},

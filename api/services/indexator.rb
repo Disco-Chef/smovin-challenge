@@ -15,8 +15,8 @@ class Indexator
     base_index = call_index_endpoint(base_year, base_month_strftimed)
     current_index = call_index_endpoint(base_year, current_month_strftimed)
 
-    return {
-      'new_rent' => ((base_rent * current_index) / base_index).round(2), # TK: Convert to cents and round after converting back to euro? 🤔
+    {
+      'new_rent' => ((base_rent * current_index) / base_index).round(2),
       'current_index' => current_index,
       'base_index' => base_index
     }
@@ -26,7 +26,7 @@ class Indexator
 
   def call_index_endpoint(base_year, date_strftimed)
     url = "https://fi7661d6o4.execute-api.eu-central-1.amazonaws.com/prod/indexes/#{base_year}/#{date_strftimed}"
-    return JSON.parse(URI.open(url).read)['index']['MS_HLTH_IDX']
+    JSON.parse(URI.open(url).read)['index']['MS_HLTH_IDX']
   end
 
   def set_base_year(base_month_date)

@@ -3,11 +3,11 @@
       <div class="row">
         <div class="form-group">
           <label>Contract Signed On</label>
-          <Datepicker v-model="formParams.signedOn" :format="'yyyy/MM/dd'" :autoApply="true" :inputClassName="(submitting && (missingSignedOn || signedOnIsInFuture || startBeforeSign)) ? 'invalid-input' : '' " />
+          <Datepicker v-model="formParams.signedOn" :format="'yyyy/MM/dd'" :autoApply="true" :inputClassName="errorClassForSignedOn" />
         </div>
         <div class="form-group">
           <label>Rent Started On</label>
-          <Datepicker v-model="formParams.startDate" :format="'yyyy/MM/dd'" :autoApply="true" :inputClassName="(submitting && (missingStartDate || startDateIsInFuture || startBeforeSign)) ? 'invalid-input' : '' " />
+          <Datepicker v-model="formParams.startDate" :format="'yyyy/MM/dd'" :autoApply="true" :inputClassName="errorClassForStartDate" />
         </div>
       </div>
       <div class="row">
@@ -29,7 +29,7 @@
         </div>
         <div class="form-group">
           <label>Rent</label>
-          <input id="rent-label" type="text" v-model="formParams.baseRent" :class="(submitting && (missingBaseRent || negativeOrZeroBaseRent)) ? 'invalid-input' : '' " />
+          <input id="rent-label" type="text" v-model="formParams.baseRent" :class="errorClassForBaseRent" />
         </div>
       </div>
       <button>Get New Rent!</button>
@@ -40,9 +40,9 @@
         <p v-if="this.missingStartDate" class="error-message">Rent start date cannot be blank</p>
         <p v-if="this.signedOnIsInFuture" class="error-message">Date the contract was signed on cannot be in the future</p>
         <p v-if="this.startDateIsInFuture" class="error-message">Rent start date cannot be in the future</p>
-        <p v-if="this.startBeforeSign" class="error-message">Signed On date cannot be in the future of the rent Start Date </p>
-        <p v-if="this.negativeOrZeroBaseRent" class="error-message">Rent must be positive 🔎 </p>
-        <p v-if="this.invalidRegion" class="error-message">Region must be one of : Brussels, Flanders, Wallonia </p>
+        <p v-if="this.startBeforeSign" class="error-message">Signed On date cannot be in the future of the rent Start Date</p>
+        <p v-if="this.negativeOrZeroBaseRent" class="error-message">Rent must be positive</p>
+        <p v-if="this.invalidRegion" class="error-message">Region must be one of : Brussels, Flanders, Wallonia</p>
       </template>
     </form>
 </template>
@@ -63,43 +63,6 @@ export default {
         startDate: '',
       },
       activeRadio: ''
-    }
-  },
-  methods: {
-    trySubmit() {
-      this.submitting = true
-      if (this.formIsInvalid) {
-        return
-      }
-      this.convertNonStringsToRightType()
-      this.formParams = this.formatParamsForCall(this.formParams)
-      this.$emit('give-valid-params-for-call:formParams', this.formParams);
-      this.resetForm()
-      this.submitting = false
-    },
-    convertNonStringsToRightType() {
-      this.formParams.baseRent = parseInt(this.formParams.baseRent)
-      this.formParams.signedOn = this.formParams.signedOn.toISOString().split('T')[0]
-      this.formParams.startDate = this.formParams.startDate.toISOString().split('T')[0]
-    },
-    resetForm() {
-      this.formParams = {
-        baseRent: '',
-        region: '',
-        signedOn: '',
-        startDate: '',
-      }
-    },
-    formatParamsForCall(formParams) {
-      return {
-        'base_rent': formParams.baseRent,
-        'region': formParams.region.toLowerCase(),
-        'signed_on': formParams.signedOn,
-        'start_date': formParams.startDate
-      }
-    },
-    radioSelect(region) {
-      this.activeRadio = region;
     }
   },
   components: {
@@ -139,6 +102,52 @@ export default {
              this.signedOnIsInFuture     ||
              this.startBeforeSign        ||
              this.negativeOrZeroBaseRent
+    },
+    errorClassForBaseRent() {
+      return (this.submitting && (this.missingBaseRent || this.negativeOrZeroBaseRent)) ? 'invalid-input' : ''
+    },
+    errorClassForSignedOn() {
+      return (this.submitting && (this.missingSignedOn || this.signedOnIsInFuture || this.startBeforeSign)) ? 'invalid-input' : ''
+    },
+    errorClassForStartDate() {
+      return (this.submitting && (this.missingStartDate || this.startDateIsInFuture || this.startBeforeSign)) ? 'invalid-input' : ''
+    }
+  },
+  methods: {
+    trySubmit() {
+      this.submitting = true
+      if (this.formIsInvalid) {
+        return
+      }
+      this.convertNonStringsToRightType()
+      this.formParams = this.formatParamsForCall(this.formParams)
+      this.$emit('give-valid-params-for-call:formParams', this.formParams);
+      this.resetForm()
+      this.submitting = false
+    },
+    convertNonStringsToRightType() {
+      this.formParams.baseRent = parseInt(this.formParams.baseRent)
+      this.formParams.signedOn = this.formParams.signedOn.toISOString().split('T')[0]
+      this.formParams.startDate = this.formParams.startDate.toISOString().split('T')[0]
+    },
+    resetForm() {
+      this.formParams = {
+        baseRent: '',
+        region: '',
+        signedOn: '',
+        startDate: '',
+      }
+    },
+    formatParamsForCall(formParams) {
+      return {
+        'base_rent': formParams.baseRent,
+        'region': formParams.region.toLowerCase(),
+        'signed_on': formParams.signedOn,
+        'start_date': formParams.startDate
+      }
+    },
+    radioSelect(region) {
+      this.activeRadio = region;
     }
   }
 }

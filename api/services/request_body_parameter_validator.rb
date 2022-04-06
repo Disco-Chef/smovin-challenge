@@ -11,7 +11,7 @@ class RequestBodyParameterValidator
   end
 
   def errors?
-    return !errors.empty?
+    !errors.empty?
   end
 
   private
@@ -24,19 +24,14 @@ class RequestBodyParameterValidator
   end
 
   def validate_region
-    unless @region.nil? || @region.empty?
-      @errors['region'] = ['must_be_one_of_brussels_or_wallonia_or_flanders'] unless ['brussels', 'wallonia', 'flanders'].include?(@region)
-    else
-      @errors['region'] = ['missing']
-    end
+    return @errors['region'] = ['missing'] if @region.nil? || @region.empty?
+
+    @errors['region'] = ['must_be_one_of_brussels_or_wallonia_or_flanders'] unless ['brussels', 'wallonia', 'flanders'].include?(@region)
   end
 
   def validate_rent
-    unless @base_rent.nil?
-      @errors['base_rent'] = ['must_be_positive'] if @base_rent.zero? || @base_rent.negative?
-    else
-      @errors['base_rent'] = ['missing']
-    end
+    return @errors['base_rent'] = ['missing'] if @base_rent.nil?
+    @errors['base_rent'] = ['must_be_positive'] if @base_rent.zero? || @base_rent.negative?
   end
 
   def validate_dates
