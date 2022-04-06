@@ -1,5 +1,5 @@
 <template>
-  <ResultCard v-if="responseIs200" />
+  <ResultCard v-if="successfulCall" />
   <IndexationForm v-else />
 </template>
 
@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      responseIs200: false
+      successfulCall: false
     }
   }
 }

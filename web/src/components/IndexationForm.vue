@@ -2,22 +2,24 @@
     <form id="indexation-form" @submit.prevent="trySubmit" >
       <div class="form-group">
         <label>Region</label>
-        <input type="text" v-model="formParams.region" />
+        <input type="text" v-model="formParams.region" :class="(submitting && (missingRegion || invalidRegion)) ? 'invalid-input' : '' " />
       </div>
       <div class="form-group">
         <label>Rent</label>
-        <input type="text" v-model="formParams.baseRent" />
+        <input type="text" v-model="formParams.baseRent" :class="(submitting && (missingBaseRent || negativeBaseRent)) ? 'invalid-input' : '' " />
       </div>
       <div class="form-group">
         <label>Contract Signed On</label>
-        <Datepicker v-model="formParams.signedOn" :format="'yyyy/MM/dd'" :autoApply="true"></Datepicker>
+        <Datepicker v-model="formParams.signedOn" :format="'yyyy/MM/dd'" :autoApply="true" :inputClassName="(submitting && (missingSignedOn || signedOnIsInFuture || startBeforeSign)) ? 'invalid-input' : '' " />
       </div>
       <div class="form-group">
         <label>Rent Started On</label>
-        <Datepicker v-model="formParams.startDate" :format="'yyyy/MM/dd'" :autoApply="true"></Datepicker>
+        <Datepicker v-model="formParams.startDate" :format="'yyyy/MM/dd'" :autoApply="true" :inputClassName="(submitting && (missingStartDate || startDateIsInFuture || startBeforeSign)) ? 'invalid-input' : '' " />
       </div>
       <button>Get new indexed rent!</button>
     </form>
+    <p>Submitting: {{ submitting }} </p>
+    <p>form params: {{ formParams }}</p>
 </template>
 
 <script>
@@ -35,26 +37,6 @@ export default {
         signedOn: '',
         startDate: '',
       }
-      // errors: {
-      //   // TK: This smells.. 🤢
-      //   baseRent: {
-      //     missing: false
-      //   },
-      //   region: {
-      //     missing: false,
-      //     notInChoices: false
-      //   },
-      //   startDate: {
-      //     missing: false,
-      //     isInFuture: false,
-      //     isBeforeSignedOn: false
-      //   },
-      //   signedOn: {
-      //     missing: false,
-      //     isInFuture: false,
-      //     isAfterStartDate: false
-      //   }
-      // }
     }
   },
   methods: {
@@ -67,11 +49,24 @@ export default {
 
       this.convertDateObjectToRequiredStringFormat()
 
-      console.log(this.formParams)
+      // TK: Send bodyParams to App.vue for the rendered ResultCard
+
+
+      // TK: Reset component's data
+      this.resetForm()
+      this.submitting = false
     },
     convertDateObjectToRequiredStringFormat() {
       this.formParams.signedOn = this.formParams.signedOn.toISOString().split('T')[0]
       this.formParams.startDate = this.formParams.startDate.toISOString().split('T')[0]
+    },
+    resetForm() {
+      this.formParams = {
+        baseRent: '',
+        region: '',
+        signedOn: '',
+        startDate: '',
+      }
     }
   },
   components: {
@@ -91,16 +86,16 @@ export default {
       return this.formParams.startDate === ''
     },
     startDateIsInFuture() {
-      return this.formParams.startDate > Date.today
+      return this.formParams.startDate > new Date()
     },
     signedOnIsInFuture() {
-      return this.formParams.signedOn > Date.today
+      return this.formParams.signedOn > new Date()
     },
     startBeforeSign() {
       return this.formParams.startDate < this.formParams.signedOn
     },
     negativeBaseRent() {
-      return Number.isInteger(parseInt(this.baseRent))
+      return Number.isInteger(parseInt(this.formParams.baseRent))
     },
     invalidRegion() {
       return !["brussels", "Brussels", "flanders", "Flanders", "wallonia", "Wallonia"].includes(this.formParams.region)
@@ -110,8 +105,8 @@ export default {
              this.missingRegion                       ||
              this.missingSignedOn                     ||
              this.missingStartDate                    ||
-             this.startDateIsInFuture ||
-             this.signedOnIsInFuture  ||
+             this.startDateIsInFuture                 ||
+             this.signedOnIsInFuture                  ||
              this.startBeforeSign                     ||
              this.negativeBaseRent                    ||
              this.invalidRegion
@@ -121,6 +116,10 @@ export default {
 </script>
 
 <style scoped>
+
+  body {
+    background-color: red;
+  }
   .form-group {
     display: flex;
     flex-direction: column;
@@ -136,7 +135,10 @@ export default {
     width: 400px;
     height: 35px;
   }
-  input::placeholder {
-    color: red;
+</style>
+<style>
+/* global styles */
+  .invalid-input {
+    border: medium solid red;
   }
 </style>
