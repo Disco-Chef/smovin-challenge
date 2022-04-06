@@ -1,5 +1,6 @@
 {
   "scripts": {
-    "dev": "gnome-terminal --geometry=150x50 --tab --title='Sinatra server' -e 'zsh -c \"cd api;bundle;ruby app.rb;exec zsh\"' --tab --title='vue server' -e 'zsh -c \"cd web;npm install;npm run serve;exec zsh\"'"
+    "dev": "gnome-terminal --geometry=150x50 --tab --title='Sinatra server' -e 'zsh -c \"cd api;bundle;ruby app.rb;exec zsh\"' --tab --title='vue server' -e 'zsh -c \"cd web;npm install;npm run serve;exec zsh\"'",
+    "test": "cd api;rspec spec;"
   }
 }
