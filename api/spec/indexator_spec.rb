@@ -10,8 +10,8 @@ describe 'Indexator' do
       computed_properties = Indexator.new.get_new_rent_data(base_rent, region, signed_on, start_date)
 
       expected = {
-        'new_rent' => 601.43,
-        'current_index' => 135.61,
+        'new_rent' => 603.87,
+        'current_index' => 136.16,
         'base_index' => 112.74
       }
 
