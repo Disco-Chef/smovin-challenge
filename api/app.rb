@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'sinatra/cross_origin'
 require 'sinatra/reloader' if development?
 require 'byebug'
 require_relative './services/indexator.rb'

@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'json' #TK: For test running file separately..
+require 'byebug'
 
 class Indexator
   BASES = [1988, 1996, 2004, 2013]
@@ -28,7 +29,8 @@ class Indexator
 
   def call_index_endpoint(base_year, date_strftimed)
     base_url = 'https://fi7661d6o4.execute-api.eu-central-1.amazonaws.com/prod/indexes'
-    return JSON.parse(URI.open(base_url += "/#{base_year}/#{date_strftimed}").read)['index']['MS_HLTH_IDX']
+    full_url = base_url + "/#{base_year}/#{date_strftimed}"
+    return JSON.parse(URI.open(full_url).read)['index']['MS_HLTH_IDX']
   end
 
   def set_base_year(base_month_date)
