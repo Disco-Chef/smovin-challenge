@@ -201,7 +201,6 @@ export default {
     display: flex;
     flex-direction: column;
     width: 100%;
-    /* justify-content: center; */
   }
   .region-input-label-pair {
     border: thin solid #2bac6d;
