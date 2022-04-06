@@ -25,7 +25,6 @@ class RequestBodyParameterValidator
 
   def validate_region
     return @errors['region'] = ['missing'] if @region.nil? || @region.empty?
-
     @errors['region'] = ['must_be_one_of_brussels_or_wallonia_or_flanders'] unless ['brussels', 'wallonia', 'flanders'].include?(@region)
   end
 
