@@ -19,6 +19,9 @@ Or from root folder with:
 npm run test
 ```
 
+## Deployed frontend
+You can try it yourself at `https://vue-indexation-app.herokuapp.com/`
+
 ## Deployed backend
 You can make a POST request to `https://indexator-sinatra.herokuapp.com/v1/indexations` with a body that has the following keys:
 `base_rent`: integer | must be present, non zero and positive
