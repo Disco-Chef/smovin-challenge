@@ -29,18 +29,18 @@ export default {
           method: 'POST',
           body: JSON.stringify(formParams),
           headers: { 'Content-Type': 'application/json' },
-        })
-        const data = await response.json()
+        });
+        const data = await response.json();
         this.newRentData = {
           baseRent: formParams.base_rent,
           newRent: data.new_rent,
           baseIndex: data.base_index,
           currentIndex: data.current_index
-        }
+        };
 
-        this.successfulCall = true
+        this.successfulCall = true;
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     startNewIndexation() {
