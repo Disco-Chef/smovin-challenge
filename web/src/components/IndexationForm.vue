@@ -114,27 +114,39 @@ export default {
     }
   },
   methods: {
-    trySubmit() {
-      this.submitting = true
-      if (this.formIsInvalid) {
-        return;
-      }
-      this.convertNonStringsToRightType();
-      this.formParams = this.formatParamsForCall(this.formParams);
-      this.$emit('give-valid-params-for-call:formParams', this.formParams);
+    async trySubmit() {
+      if (this.formIsInvalid || this.isSubmitting) return;
+      this.isSubmitting = true;
+      const response = await this.callIndexator()
       this.submitting = false;
+      this.$emit('show-results', response)
     },
-    convertNonStringsToRightType() {
-      this.formParams.baseRent = parseInt(this.formParams.baseRent);
-      this.formParams.signedOn = this.formParams.signedOn.toISOString().split('T')[0];
-      this.formParams.startDate = this.formParams.startDate.toISOString().split('T')[0];
+    async callIndexator() {
+      try {
+        const response = await fetch('http://localhost:4567/v1/indexations', {
+          method: 'POST',
+          body: JSON.stringify(this.serializeParams()),
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await response.json();
+
+        this.successfulCall = true;
+        return {
+          baseRent: parseInt(this.formParams.baseRent),
+          newRent: data.new_rent,
+          baseIndex: data.base_index,
+          currentIndex: data.current_index
+        };
+      } catch (error) {
+        console.error(error);
+      }
     },
-    formatParamsForCall(formParams) {
+    serializeParams() {
       return {
-        'base_rent': formParams.baseRent,
-        'region': formParams.region.toLowerCase(),
-        'signed_on': formParams.signedOn,
-        'start_date': formParams.startDate
+        'base_rent': parseInt(this.formParams.baseRent),
+        'region': this.formParams.region,
+        'signed_on': this.formParams.signedOn.toISOString().split('T')[0],
+        'start_date': this.formParams.startDate.toISOString().split('T')[0],
       };
     }
   }
