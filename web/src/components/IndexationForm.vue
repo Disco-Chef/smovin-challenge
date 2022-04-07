@@ -13,17 +13,17 @@
       <div class="row">
         <div class="form-group">
           <div id="region-input-label-pairs" :class="(submitting && missingRegion) ? 'invalid-input' : '' ">
-            <div class="region-input-label-pair" :class="{activeRadioClass: activeRadio === 'brussels'}">
-              <label for="brussels" @click="radioSelect('brussels')">Brussels</label>
+            <div class="region-input-label-pair" :class="{activeRadioClass: formParams.region === 'brussels'}">
+              <label for="brussels">Brussels</label>
               <input hidden type="radio" id="brussels" value="brussels" v-model="formParams.region" />
             </div>
-            <div class="region-input-label-pair" :class="{activeRadioClass: activeRadio === 'flanders'}" >
-              <label for="flanders" @click="radioSelect('flanders')">Flanders</label>
+            <div class="region-input-label-pair" :class="{activeRadioClass: formParams.region === 'flanders'}">
+              <label for="flanders">Flanders</label>
               <input hidden type="radio" id="flanders" value="flanders" v-model="formParams.region" />
             </div>
-            <div class="region-input-label-pair" :class="{activeRadioClass: activeRadio === 'wallonia'}">
-              <label for="wallonia" @click="radioSelect('wallonia')" >Wallonia</label>
-              <input hidden type="radio" id="wallonia" value="wallonia" v-model="formParams.region"  />
+            <div class="region-input-label-pair" :class="{activeRadioClass: formParams.region === 'wallonia'}">
+              <label for="wallonia">Wallonia</label>
+              <input hidden type="radio" id="wallonia" value="wallonia" v-model="formParams.region" />
             </div>
           </div>
         </div>
@@ -136,9 +136,6 @@ export default {
         'signed_on': formParams.signedOn,
         'start_date': formParams.startDate
       };
-    },
-    radioSelect(region) {
-      this.activeRadio = region;
     }
   }
 }
