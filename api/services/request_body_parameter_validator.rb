@@ -1,5 +1,5 @@
 class RequestBodyParameterValidator
-  attr_reader :errors
+  attr_reader :errors, :base_rent, :signed_on, :start_date
 
   def initialize(user_input)
     @base_rent = user_input['base_rent']
