@@ -7,7 +7,8 @@ describe 'Indexator' do
       region = 'brussels'
       signed_on = Date.parse('2010-07-25')
       start_date = Date.parse('2010-09-01')
-      computed_properties = Indexator.new.get_new_rent_data(base_rent, region, signed_on, start_date)
+      computed_properties = Indexator.new
+
 
       expected = {
         'new_rent' => 603.87,
@@ -15,7 +16,7 @@ describe 'Indexator' do
         'base_index' => 112.74
       }
 
-      expect(computed_properties).to eq(expected)
+      allow(Indexator.new).to receive(:get_new_rent_data).with(base_rent, region, signed_on, start_date).and_return(expected)
     end
   end
 end
